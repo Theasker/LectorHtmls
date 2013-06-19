@@ -53,6 +53,9 @@
           <StringArray count="0"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="cmbListadoItemStateChanged"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="lblSalida">
       <Properties>

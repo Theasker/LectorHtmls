@@ -1,7 +1,8 @@
 package ayudastrabajo;
 
+import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileFilter;
+import java.io.FileReader;
 import javax.swing.DefaultComboBoxModel;
 
 public class AyudasTrabajo extends javax.swing.JFrame {
@@ -20,7 +21,7 @@ public class AyudasTrabajo extends javax.swing.JFrame {
     File f = new File(sDirectorio);
     String texto = null;
     if (f.exists()) { // El directorio existe
-      File[] ficheros = f.listFiles(new Filtro(".xml"));
+      File[] ficheros = f.listFiles(new Filtro(".html"));
       //File[] ficheros = f.listFiles();
       for (int x = 0; x < ficheros.length; x++) {
         cmbListado.addItem(ficheros[x].getName());
@@ -40,6 +41,11 @@ public class AyudasTrabajo extends javax.swing.JFrame {
     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
     cmbListado.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+    cmbListado.addItemListener(new java.awt.event.ItemListener() {
+      public void itemStateChanged(java.awt.event.ItemEvent evt) {
+        cmbListadoItemStateChanged(evt);
+      }
+    });
 
     lblSalida.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
     lblSalida.setVerticalAlignment(javax.swing.SwingConstants.TOP);
@@ -67,6 +73,31 @@ public class AyudasTrabajo extends javax.swing.JFrame {
 
     pack();
   }// </editor-fold>//GEN-END:initComponents
+
+  private void cmbListadoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbListadoItemStateChanged
+    // Leemos el contenido del fichero seleccionado línea a línea
+    try{
+      File fich = new File(cmbListado.getSelectedItem().toString());
+      if (fich.exists()) {// Si existe el fichero
+        // Abrimos el flujo de lectura a el fichero
+        BufferedReader br = new BufferedReader(new FileReader(fich));
+        String linea;
+        String texto = "";
+        // Leemos línea a línea hasta llegar a la última
+        while ((linea = br.readLine()) != null){
+          // Almacenamos el contenido del fichero en un String
+          texto = texto + linea;
+        }
+        lblSalida.setText(texto);
+        // Cerramos el flujo
+        br.close();
+      }
+      pack();
+    }catch (Exception ex){
+      // Mostramos el error que ha habido
+      lblSalida.setText(ex.getMessage());
+    }
+  }//GEN-LAST:event_cmbListadoItemStateChanged
 
   public static void main(String args[]) {
     java.awt.EventQueue.invokeLater(new Runnable() {
